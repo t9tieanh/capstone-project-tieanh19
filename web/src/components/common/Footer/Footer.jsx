@@ -14,7 +14,7 @@ const Footer = () => {
                             </div>
                             <div className="col-5"> <p>Made by <strong> Pham Tien Anh</strong> | Verson : <strong> 1.0.0</strong></p></div>
                             <div className="col-3">
-                                <p> Source Code on Github  <a href="https://github.com/t9tieanh/freeclassroom_"><i className="fab fa-github"></i></a>  </p>
+                                <p> Source Code on Github  <a href="https://github.com/t9tieanh/capstone-project-tieanh19"><i className="fab fa-github"></i></a>  </p>
                             </div>
                         </div>
                     </div>
