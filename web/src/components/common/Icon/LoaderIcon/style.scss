@@ -1,0 +1,14 @@
+.loaderIcon {
+    /* nếu bạn đã để margin-left trong inline style thì khỏi cần lặp lại */
+    display: inline-block;               /* bắt buộc để transform hoạt động đúng */
+    animation: spin 1s linear infinite;  /* 1s cho 1 vòng, chạy đều, lặp vô hạn */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
