@@ -1,0 +1,29 @@
+.home-page {
+    max-width: 60vw;
+    margin-top: 100px;
+    
+    .btn-connect-wallet {
+        background-color: aliceblue;
+        color: black;
+        border: 0px;
+        padding: 12px;
+        border-radius: 20px;
+    }
+
+    .btn-more {
+        color: white;
+        border: 0px;
+        padding: 12px;
+        border-radius: 20px;
+    }
+
+    .title {
+        background-color: rgb(46, 46, 46) !important;
+        padding: 10px;
+        border-radius: 20px;
+        
+        .text-muted {
+            color: rgb(199, 195, 195) !important;
+        }
+    }
+}

@@ -14,7 +14,7 @@ const Header = () => {
     <Nav
       activeKey="/home"
       onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
-      className='px-4 header'
+      className='px-4 header mb-4'
     >
       <div class="d-flex justify-content-between w-100 align-items-center">
         <div>
