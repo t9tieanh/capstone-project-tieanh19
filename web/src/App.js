@@ -5,11 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import AuthenticationContext from './context/authentication.context';
 import { useState } from 'react';
 import { BrowserProvider } from 'ethers';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const App = () => {
 
   const [account, setAccount] = useState(null);
+  const providerRef = useRef();
+  const signerRef = useRef();
 
   useEffect(() => {
     async function checkMetaMaskConnection() {
@@ -18,8 +20,9 @@ const App = () => {
           return;
       }
 
-      const provider = new BrowserProvider(window.ethereum);
-      const accounts = await provider.listAccounts();
+      providerRef.current = new BrowserProvider(window.ethereum);
+      signerRef.current = await providerRef.current.getSigner();
+      const accounts = await providerRef.current.listAccounts();
 
       if (accounts.length > 0) {
         setAccount(accounts[0].address);
@@ -30,7 +33,11 @@ const App = () => {
     window.ethereum.on("accountsChanged", (accounts) => {
       if (accounts.length === 0) {
         console.log("User disconnected MetaMask");
+
+        // Reset account and provider if no accounts are available
         setAccount(null);
+        providerRef.current = null;
+        signerRef.current = null;
       } else {
         setAccount(accounts[0]);
       }
@@ -41,7 +48,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <AuthenticationContext.Provider value={{account, setAccount}}>
+      <AuthenticationContext.Provider value={{account, setAccount, providerRef, signerRef}}>
         <Outlet />
       </AuthenticationContext.Provider>
     </div>

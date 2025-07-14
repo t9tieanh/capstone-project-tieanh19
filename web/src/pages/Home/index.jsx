@@ -11,89 +11,84 @@ import AuthenticationContext from "~/context/authentication.context";
 import { useContext, useState } from "react";
 import ProfilePage from "../Profile";
 import { BrowserProvider } from "ethers";
-import { use } from "react";
+import { useRef } from "react";
 
 const HomePage = () => {
 
-    const { account, setAccount } = useContext(AuthenticationContext);
-    let provider = null; 
-    let signer = null;
+    const { account, setAccount, providerRef, signerRef } = useContext(AuthenticationContext);
 
 
     const handleConnectWallet = async () => {
-    if (typeof window.ethereum === "undefined") {
-        toast.error("Bạn chưa cài đặt MetaMask. Vui lòng cài đặt MetaMask để kết nối ví.");
-        return;
-    }
-
-    try {
-            // Tạo provider từ MetaMask
-            provider = new BrowserProvider(window.ethereum);
-
-            // Yêu cầu người dùng mở MetaMask và connect account
-            await provider.send("eth_requestAccounts", []);
-
-            // Lấy signer
-            signer = await provider.getSigner();
-            const userAddress = await signer.getAddress();
-
-            console.log("Địa chỉ ví:", userAddress);
-            toast.success("Kết nối ví MetaMask thành công!");
-
-            // Lấy network thông tin
-            const network = await provider.getNetwork();
-            console.log("Chain hiện tại:", network.chainId);
-
-            if (network.chainId !== 11155111) { // 11155111 là Sepolia
-                try {
-                    // Thử switch sang Sepolia
-                    const accounts = await window.ethereum.request({
-                        method: 'eth_requestAccounts'
-                    });
-                    setAccount(accounts[0]);
-                    toast.success("Đã chuyển sang mạng Sepolia");
-                } catch (switchError) {
-                    if (switchError.code === 4902) {
-                        try {
-                            // Thêm Sepolia nếu MetaMask chưa có
-                            await window.ethereum.request({
-                                method: "wallet_addEthereumChain",
-                                params: [
-                                    {
-                                        chainId: "0xaa36a7",
-                                        chainName: "Sepolia Test Network",
-                                        nativeCurrency: {
-                                            name: "SepoliaETH",
-                                            symbol: "ETH",
-                                            decimals: 18,
-                                        },
-                                        rpcUrls: ["https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID"],
-                                        blockExplorerUrls: ["https://sepolia.etherscan.io"],
-                                    },
-                                ],
-                            });
-                            toast.success("Đã thêm & chuyển sang Sepolia");
-                        } catch (addError) {
-                            console.error("Không thể thêm Sepolia:", addError);
-                            toast.error("Không thể thêm mạng Sepolia");
-                        }
-                    } else {
-                        console.error("Lỗi switch chain:", switchError);
-                        toast.error("Hãy chuyển MetaMask sang Sepolia");
-                    }
-                }
-            } else {
-                setAccount(userAddress);
-                toast.success("Bạn đang ở đúng mạng Sepolia");
-            }
-        } catch (err) {
-            console.error("Lỗi kết nối ví:", err);
-            toast.error("Đã có lỗi khi kết nối ví");
+        if (typeof window.ethereum === "undefined") {
+            toast.error("Bạn chưa cài đặt MetaMask. Vui lòng cài đặt MetaMask để kết nối ví.");
+            return;
         }
+
+        try {
+                // Tạo provider từ MetaMask
+                providerRef.current = new BrowserProvider(window.ethereum);
+                await providerRef.current.send("eth_requestAccounts", []);
+                signerRef.current = await providerRef.current.getSigner();
+
+                const userAddress = await signerRef.current.getAddress();
+
+                console.log("Địa chỉ ví:", userAddress);
+                toast.success("Kết nối ví MetaMask thành công!");
+
+                // Lấy network thông tin
+                const network = await providerRef.current.getNetwork();
+                console.log("Chain hiện tại:", network.chainId);
+
+                if (network.chainId !== 11155111) { // 11155111 là Sepolia
+                    try {
+                        // Thử switch sang Sepolia
+                        const accounts = await window.ethereum.request({
+                            method: 'eth_requestAccounts'
+                        });
+                        setAccount(accounts[0]);
+                        toast.success("Đã chuyển sang mạng Sepolia");
+                    } catch (switchError) {
+                        if (switchError.code === 4902) {
+                            try {
+                                // Thêm Sepolia nếu MetaMask chưa có
+                                await window.ethereum.request({
+                                    method: "wallet_addEthereumChain",
+                                    params: [
+                                        {
+                                            chainId: "0xaa36a7",
+                                            chainName: "Sepolia Test Network",
+                                            nativeCurrency: {
+                                                name: "SepoliaETH",
+                                                symbol: "ETH",
+                                                decimals: 18,
+                                            },
+                                            rpcUrls: ["https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID"],
+                                            blockExplorerUrls: ["https://sepolia.etherscan.io"],
+                                        },
+                                    ],
+                                });
+                                toast.success("Đã thêm & chuyển sang Sepolia");
+                            } catch (addError) {
+                                console.error("Không thể thêm Sepolia:", addError);
+                                toast.error("Không thể thêm mạng Sepolia");
+                            }
+                        } else {
+                            console.error("Lỗi switch chain:", switchError);
+                            toast.error("Hãy chuyển MetaMask sang Sepolia");
+                        }
+                    }
+                } else {
+                    setAccount(userAddress);
+                    toast.success("Bạn đang ở đúng mạng Sepolia");
+                }
+            } catch (err) {
+                console.error("Lỗi kết nối ví:", err);
+                toast.error("Đã có lỗi khi kết nối ví");
+            }
     };
 
     return account ? (
-            <ProfilePage provider = {provider} signer = {signer} />
+            <ProfilePage account = {account} provider = {providerRef.current} signer = {signerRef.current}  />
         ) : (
             <Container className="home-page">
                 <div className="d-flex flex-column justify-content-center align-items-center h-100">

@@ -12,8 +12,14 @@ const NFTList = () => {
         { id: 2, title: 'Item 2', content: 'Nội dung cho item 2' },
         { id: 3, title: 'Item 3', content: 'Nội dung cho item 3' },
         { id: 4, title: 'Item 4', content: 'Nội dung cho item 4' },
-        { id: 5, title: 'Item 4', content: 'Nội dung cho item 4' }
+        { id: 5, title: 'Item 5', content: 'Nội dung cho item 5' },
+        { id: 6, title: 'Item 6', content: 'Nội dung cho item 6' },
+        { id: 7, title: 'Item 7', content: 'Nội dung cho item 7' },
+        { id: 8, title: 'Item 8', content: 'Nội dung cho item 8' },
+        { id: 9, title: 'Item 9', content: 'Nội dung cho item 9' },
+        { id: 10, title: 'Item 10', content: 'Nội dung cho item 10' }
     ]);
+
 
     return <>
 
@@ -26,9 +32,9 @@ const NFTList = () => {
 
             <Container>
             <Row>
-                {items.map((item) => (
-                <Col key={item.id} md={3}>
-                    <NFTCard />
+                {items.map((item, index) => (
+                <Col key={index} md={3}>
+                    <NFTCard nftId={item.id} />
                 </Col>
                 ))}
             </Row>
