@@ -1,0 +1,49 @@
+{
+  "name": "ac-hardhat-template",
+  "version": "0.1.0",
+  "author": "nexm",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "hardhat": "hardhat",
+    "node": "hardhat node",
+    "size": "hardhat size-contracts",
+    "clean": "hardhat clean",
+    "run:sepolia": "hardhat run --network sepolia",
+    "run:ethereum": "hardhat run --network ethereum"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "hardhat": "^2.25.0",
+    "hardhat-deploy": "^1.0.1",
+    "hardhat-deploy-ethers": "^0.4.2"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
+    "@nomicfoundation/hardhat-verify": "^2.0.12",
+    "@openzeppelin/contracts": "^5.1.0",
+    "@openzeppelin/contracts-upgradeable": "5.3.0",
+    "@openzeppelin/hardhat-upgrades": "^3.9.0",
+    "@remix-project/remixd": "^0.6.17",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "dotenv": "^16.0.3",
+    "ethereum-waffle": "^4.0.10",
+    "ethereumjs-abi": "^0.6.8",
+    "ethers": "^6.13.5",
+    "global": "^4.4.0",
+    "hardhat-abi-exporter": "^2.10.1",
+    "hardhat-contract-sizer": "^2.9.0",
+    "hardhat-gas-reporter": "2.3.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "prettier": {
+    "printWidth": 120
+  }
+}
