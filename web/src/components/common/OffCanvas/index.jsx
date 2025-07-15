@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-const CustomOffCanvas = ({show, setShow, result, children, header, placement}) => {
+const CustomOffCanvas = ({show, setShow, children, header, placement, className, style}) => {
     
     const handleClose = () => setShow(false);
     
     return <>
-        <Offcanvas show={show} onHide={handleClose} placement={placement} >
+        <Offcanvas show={show} onHide={handleClose} placement={placement} className={className} style={style}> 
             <Offcanvas.Header closeButton>
             <hr/>
             <Offcanvas.Title className='fw-bold'>{header}</Offcanvas.Title>

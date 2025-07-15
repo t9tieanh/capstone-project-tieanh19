@@ -44,7 +44,7 @@ const NFTCard = ({ nftId }) => {
                 nftData?.description || "No description available"
             }
             </Card.Text>
-            <Button className={'nft-button'} icon={<MdGeneratingTokens/>} variant="primary">Token{nftData.id}</Button>
+            <Button className={'nft-button'} icon={<MdGeneratingTokens/>} variant="primary">Token{nftData?.id}</Button>
         </Card.Body>
         </Card>
     );

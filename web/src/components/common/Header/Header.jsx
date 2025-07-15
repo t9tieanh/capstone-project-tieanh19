@@ -2,19 +2,13 @@ import Nav from 'react-bootstrap/Nav';
 import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import './style.scss';
-import { FaCoins } from "react-icons/fa";
-import logo from '~/assets/logo.jpeg'
-import { BrowserProvider, parseEther } from 'ethers';
-import { useState } from 'react';
-import AuthenticationContext from '~/context/authentication.context';
 import { useContext } from 'react';
+import logo from '~/assets/logo.jpeg'
+import AuthenticationContext from '~/context/authentication.context';
 
 const Header = () => {
 
-  const navigate = useNavigate();
-
-  const { account } = useContext(AuthenticationContext);
-  
+  const { account, balance } = useContext(AuthenticationContext);
 
   return (
     <>
@@ -44,10 +38,11 @@ const Header = () => {
                 </div>
                 <div>
                   <h6 className="mb-1">
-                    {account
+                    Wallet: {account
                       ? `${account.slice(0,6)}...${account.slice(-4)}`
                       : ""}
                   </h6>
+                  <div className='balance'><h6>Số dư: {balance} $</h6></div>
                 </div>
               </div>
             </>

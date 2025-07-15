@@ -4,7 +4,7 @@ import React from "react";
 const TextInput = ({value, setValue, placeholder, name, onChangeFunc, overlayElement, className, type, idInput, height}) => {
 
   return (
-    <div className={`text-input-2 ${className}`} >
+    <div className={`text-input-2 font-white ${className}`} >
       <label htmlFor={idInput}>{name}</label>
       <input
         className="date-input"

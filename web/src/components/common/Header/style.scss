@@ -11,4 +11,17 @@
         padding: 7px !important;
         border-radius: 15px;
     }
+
+    .balance {
+        color: rgb(167, 165, 164);
+        padding: 5px;
+        margin-bottom: 0px;
+        background-color: rgb(19, 16, 16);
+        width: fit-content;
+        border-radius: 10px;
+
+        h6 {
+            margin-bottom: 0px;
+        }
+    }
 }

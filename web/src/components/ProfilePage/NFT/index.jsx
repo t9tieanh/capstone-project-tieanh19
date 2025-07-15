@@ -23,8 +23,8 @@ const NFTList = () => {
 
     return <>
 
-    <Card name={'Your NFT'} 
-        subTitle={'Here you can see your NFTs.'}
+    <Card name={'Danh sách NFT'} 
+        subTitle={'Bạn có thể nhìn thấy toàn bộ token ở đây.'}
         className={'nft-list'}
         icon={<FaChartArea/>}
         children={

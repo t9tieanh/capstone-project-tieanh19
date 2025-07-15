@@ -6,14 +6,31 @@ import AuthenticationContext from './context/authentication.context';
 import { useState } from 'react';
 import { BrowserProvider } from 'ethers';
 import { useEffect, useRef } from 'react';
+import { ethers } from 'ethers';
+import { useCallback } from 'react';
 
 const App = () => {
 
   const [account, setAccount] = useState(null);
   const providerRef = useRef();
   const signerRef = useRef();
+  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
+
+    // lấy số dư ví
+    async function fetchBalance (address) {
+        if (!providerRef.current) return;
+
+        try {
+            const balance = await providerRef.current.getBalance(address);
+            setBalance(Number(ethers.formatEther(balance)).toFixed(4));
+        } catch (error) {
+            console.error("Error fetching balance:", error);
+        }
+    }
+
+    // check connection tới ví
     async function checkMetaMaskConnection() {
       if (typeof window.ethereum === 'undefined') {
           console.log("MetaMask chưa được cài đặt!");
@@ -26,6 +43,9 @@ const App = () => {
 
       if (accounts.length > 0) {
         setAccount(accounts[0].address);
+
+        // lấy số dư
+        await fetchBalance(accounts[0].address) 
       }
     }
 
@@ -48,7 +68,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <AuthenticationContext.Provider value={{account, setAccount, providerRef, signerRef}}>
+      <AuthenticationContext.Provider value={{account, setAccount, providerRef, signerRef, balance}}>
         <Outlet />
       </AuthenticationContext.Provider>
     </div>
