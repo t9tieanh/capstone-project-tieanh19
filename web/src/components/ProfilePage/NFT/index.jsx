@@ -2,50 +2,98 @@ import Card from "~/components/common/Card";
 import { FaChartArea } from "react-icons/fa";
 import './style.scss';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NFTCard from "../NFTCard";
+import callContractService from "~/service/callContract.service";
+import { useContext } from "react";
+import authenticationContext from "~/context/authentication.context";
+import Canvas from '~/components/common/OffCanvas';
+import NFTInfo from '../NFTInfo';
+import { useCallback } from "react";
+
 
 const NFTList = () => {
 
-    const [items, setItems] = useState([
-        { id: 1, title: 'Item 1', content: 'Nội dung cho item 1' },
-        { id: 2, title: 'Item 2', content: 'Nội dung cho item 2' },
-        { id: 3, title: 'Item 3', content: 'Nội dung cho item 3' },
-        { id: 4, title: 'Item 4', content: 'Nội dung cho item 4' },
-        { id: 5, title: 'Item 5', content: 'Nội dung cho item 5' },
-        { id: 6, title: 'Item 6', content: 'Nội dung cho item 6' },
-        { id: 7, title: 'Item 7', content: 'Nội dung cho item 7' },
-        { id: 8, title: 'Item 8', content: 'Nội dung cho item 8' },
-        { id: 9, title: 'Item 9', content: 'Nội dung cho item 9' },
-        { id: 10, title: 'Item 10', content: 'Nội dung cho item 10' }
-    ]);
+    const { providerRef } = useContext(authenticationContext);
+    const [ tokenCount, setTokenCount ] = useState()
+    const [ showDetail, setShowDetail ] = useState(false)
+
+    const [nftInfo, setNftInfo] = useState({
+        contractAddress: '',
+        ownerAddress: '',
+        tokenId: 0,
+        imageUrl: ''
+    });
+
+
+    // lấy số lương token đã đào 
+    useEffect(
+        () => {
+            const fetchTokenCount = async () => {
+                try {
+                    const tokenCountBigInt = await callContractService.getTokenCount(providerRef.current);
+                        if (tokenCountBigInt !== undefined) {
+                            setTokenCount(Number(tokenCountBigInt)); 
+                        }
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+            fetchTokenCount()
+        }, []
+    )
+
+    const handleClickDetailNFT = useCallback((nft) => {
+        setShowDetail(true)
+        // set lại state
+        setNftInfo(nft)
+    }, [])
 
 
     return <>
-
     <Card name={'Danh sách NFT'} 
         subTitle={'Bạn có thể nhìn thấy toàn bộ token ở đây.'}
         className={'nft-list'}
         icon={<FaChartArea/>}
         children={
             <>
-
             <Container>
             <Row>
-                {items.map((item, index) => (
-                <Col key={index} md={3}>
-                    <NFTCard nftId={item.id} />
-                </Col>
-                ))}
+                {Array.from({ length: tokenCount }, (_, index) => {
+                    const nftId = index + 1;
+                    return (
+                        <Col key={nftId} md={3}>
+                            <NFTCard 
+                                nftId={nftId} 
+                                handleClickDetailNFT={handleClickDetailNFT} 
+                            />
+                        </Col>
+                    );
+                })}
             </Row>
             </Container>
-            
-            
             </>
         }
     />
-    
-    
+
+    <Canvas
+        placement={'bottom'}
+        header={<>Thông tin chi tiết về token này</>}
+        show={showDetail}
+        setShow={setShowDetail}
+        className={'detail-nft'}
+        style={{ height: '38vh' }}
+        children={
+            <>
+                <NFTInfo
+                    contractAddress={nftInfo.contractAddress}
+                    ownerAddress={nftInfo.ownerAddress}
+                    tokenId={nftInfo.tokenId}
+                    imageUrl={nftInfo.imageUrl}
+                />
+            </>
+        }
+    />
     </>
 }
 

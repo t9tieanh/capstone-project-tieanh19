@@ -4,7 +4,8 @@ export const ERC721_ABI = [
   'function balanceOf(address owner) view returns (uint256)',
   'function ownerOf(uint256 tokenId) view returns (address)',
   'function tokenURI(uint256 tokenId) view returns (string)',
-  'function mint(uint256 amount) external payable'
+  'function mint(uint256 amount) external payable',
+  'function nextTokenId() view returns (uint256)'
 ]
 
 // số lượng NFT tối đa có thể mint

@@ -13,5 +13,31 @@
         background-color: rgb(156, 62, 66);
         border: 0px;
         width: 100%;
+        border-radius: 15px;
+        font-size: smaller;
+        font-weight: bold;
+        min-height: 40px !important;
+    }
+
+    .nft-owner {
+        width: 100% !important;
+        background-color: rgb(156, 62, 66) !important;
+        padding: 10px !important;
+        border-radius: 15px;
+        font-size: smaller !important;
+    }
+
+    // .hover-lift-glow {
+    //   transition: all 0.3s ease;
+    // }
+
+}
+
+.hover-lift-glow {
+    transition: all 0.3s ease !important;
+
+    &:hover {
+        transform: translateY(-8px) !important; // nâng lên
+        box-shadow: 0 0 20px rgba(66, 66, 66, 0.5) !important; // glow màu xanh lá
     }
 }

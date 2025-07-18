@@ -4,4 +4,28 @@
     border-radius: 20px;
     padding: 20px;
     background-image: url('https://img.freepik.com/vetores-premium/ethereum-eth-em-tendencia-de-baixa-e-preco-caindo-em-fundo-vermelho-escuro-simbolo-de-moeda-de-criptomoeda-e-seta-vermelha-para-baixo-com-queda-de-meteoros-crise-de-negociacao-e-crash_337410-1949.jpg');
+
+    h4 {
+        background-color: rgb(119, 31, 31);
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 20px;
+        color: rgb(63, 42, 42);
+    }
+
+    .card {
+        background-color: transparent !important;
+        color: white;
+    }
+
+    .content {
+        height: 100% !important;
+    }
+
+    .token-count {
+        background-color: white;
+        padding: 5px;
+        color: black !important;
+        border-radius: 30px;
+    }
 }

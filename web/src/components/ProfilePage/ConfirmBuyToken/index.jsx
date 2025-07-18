@@ -15,7 +15,10 @@ const ConfirmBuyToken = ({ onConfirmBuyToken, closeModal }) => {
 
     const [tokenNumber, setTokenNumber] = useState(1);
 
-    const handleConfirm = async () => {
+    const handleConfirm = async (e) => {
+
+         e.preventDefault();
+
         if (tokenNumber <= 0) {
             toast.error('Số lượng token phải lớn hơn 0!');
             return;
@@ -32,7 +35,7 @@ const ConfirmBuyToken = ({ onConfirmBuyToken, closeModal }) => {
     
     
     return <>
-        <Form className='confirm-buy-token-form' onSubmit={handleConfirm}>
+        <Form className='confirm-buy-token-form' onSubmit={(e) => handleConfirm(e)}>
             <h5 className="mb-3 text-left fw-bold">
                 <IoWarningSharp />Lưu ý: Bạn chỉ có thể mua tối đa {maxPerWallet} token!
             </h5>

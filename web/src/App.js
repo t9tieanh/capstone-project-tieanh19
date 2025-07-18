@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { BrowserProvider } from 'ethers';
 import { useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
-import { useCallback } from 'react';
 
 const App = () => {
 

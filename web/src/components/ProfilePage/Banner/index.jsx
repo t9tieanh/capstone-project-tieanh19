@@ -70,6 +70,13 @@ const Banner = () => {
         icon={<FaEthereum />}
         onClickFunc={handleBuyMore}
       >Mua</PrimaryButton>
+
+      <a href='https://sepolia.etherscan.io/address/0x4Cc9015d8e11CFb8c60D0EbF89fF3A88b9B1F93E' className='ml-3'>
+      <PrimaryButton className={'btn-buy bg-primary ml-3'} 
+        icon={<FaEthereum />}
+        text={'Chi tiết Smart Contract'}
+      />
+      </a>
     </div>
 
     {/* show nút xác nhận mua token */}

@@ -47,10 +47,24 @@ const mintNFT = async (signer, amount) => {
   await tx.wait();
 }
 
+const getTokenCount = async (provider) => {
+  const contract = getReadContract(provider);
+  return await contract.nextTokenId();
+}
+
+
+const getOwnerOfToken = async (provider, tokenId) => {
+  const contract = getReadContract(provider);
+  return await contract.ownerOf(tokenId);
+}
+
+
 const callContractService = {
   getBalanceOf,
   getTokenURI,
-  mintNFT
+  mintNFT,
+  getTokenCount,
+  getOwnerOfToken
 }
 
 export default callContractService;
