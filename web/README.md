@@ -1,72 +1,79 @@
-#Node.js v14.17.0
+# 3️⃣ NFT Whitelist Sale
 
-# Getting Started with Create React App
+## Mô tả dự án
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Đây là dự án ứng dụng web cho phép người dùng tham gia mua NFT thông qua hình thức Whitelist Sale. Dự án bao gồm một smart contract ERC721 và một giao diện ReactJS để tương tác với contract.
 
-## Available Scripts
+### Tính năng chính
 
-In the project directory, you can run:
+- **Smart Contract ERC721**: 
+  - Chuẩn ERC721 cho phép phát hành và quản lý các NFT duy nhất.
+  - Chỉ các địa chỉ được owner thêm vào whitelist mới có quyền mint NFT.
+  - Giới hạn số lượng NFT tối đa mà mỗi ví có thể sở hữu.
+  - Chủ sở hữu (admin) có thể rút toàn bộ số ETH thu được từ việc bán NFT về ví của mình.
 
-### `npm start`
+- **Frontend ReactJS**:
+  - Kết nối ví MetaMask, kiểm tra mạng Sepolia.
+  - Hiển thị số lượng NFT đã mint, danh sách NFT, thông tin chi tiết từng NFT.
+  - Chức năng mint NFT chỉ dành cho whitelist.
+  - Hiển thị số dư ví, thông báo trạng thái giao dịch.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Cấu trúc thư mục
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- `src/config/contract.jsx`: Chứa địa chỉ contract, ABI, các tham số cấu hình và mã lỗi.
+- `src/service/callContract.service.js`: Giao tiếp với smart contract (mint, lấy thông tin NFT, kiểm tra whitelist...).
+- `src/components/ProfilePage/`: Các thành phần giao diện liên quan đến NFT, ví, banner mint...
+- `src/pages/Home/`, `src/pages/Profile/`: Trang chính và trang profile người dùng.
 
-### `npm test`
+## Hướng dẫn sử dụng
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Cài đặt**  
+   ```sh
+   npm install
+   ```
 
-### `npm run build`
+2. **Chạy ứng dụng**  
+   ```sh
+   npm start
+   ```
+   Truy cập [http://localhost:3000](http://localhost:3000)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Kết nối ví & mint NFT**
+   - Kết nối MetaMask, chuyển sang mạng Sepolia.
+   - Nếu địa chỉ của bạn đã được owner thêm vào whitelist, bạn có thể mint NFT (tối đa số lượng cho phép).
+   - Sau khi mint, NFT sẽ hiển thị trong trang profile.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Ảnh giao diện
 
-### `npm run eject`
+### Giao diện trang chủ
+![Trang chủ](./screenshots/home.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Giao diện profile và danh sách NFT đã sở hữu
+![Mint NFT](./screenshots/profile.png)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Giao diện mint NFT (chỉ whitelist)
+![Mint NFT](./screenshots/mint-nft.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Giao diện chi tiết NFT token
+![NFT- detail](./screenshots/nft-detail.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+*Bạn có thể thay thế các ảnh trên bằng ảnh chụp màn hình thực tế của bạn, lưu vào thư mục `screenshots` trong project.*
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Smart Contract
 
-### Code Splitting
+- Chuẩn ERC721.
+- Hàm `addToWhitelist(address)` chỉ owner gọi được.
+- Hàm `mint(uint256 amount)` chỉ cho phép whitelist, kiểm tra giới hạn mỗi ví.
+- Hàm `withdraw()` cho phép owner rút ETH về ví admin.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Công nghệ sử dụng
 
-### Analyzing the Bundle Size
+- ReactJS, Bootstrap, React-Bootstrap, Ethers.js, Redux, React-Router, React-Toastify.
+- Smart contract Solidity (triển khai trên Sepolia).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
