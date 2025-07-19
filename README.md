@@ -1,5 +1,14 @@
 # 3️⃣ NFT Whitelist Sale - Capstone Project AC-Blockchain
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="ReactJS" width="60" height="60"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/solidity/solidity-original.svg" alt="Solidity" width="60" height="60"/>
+  <img src="./screenshots/ethereum-4.png" alt="Ethereum" width="60" height="60"/>
+  <img src="./screenshots/ether.png" alt="Ether" width="60" height="60"/>
+  <img src="./screenshots/hardhat.png" alt="Hardhat" width="60" height="60"/>
+</p>
+
+
 ## Project Description
 
 This is a web application project that allows users to purchase NFTs through a Whitelist Sale mechanism. The project includes an ERC721 smart contract and a ReactJS frontend for interacting with the contract.
