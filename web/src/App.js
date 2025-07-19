@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { BrowserProvider } from 'ethers';
 import { useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
+import { toast } from 'react-toastify';
 
 const App = () => {
 
@@ -48,19 +49,21 @@ const App = () => {
       }
     }
 
-    // Lắng nghe sự kiện khi người dùng kết nối hoặc ngắt kết nối MetaMask
-    window.ethereum.on("accountsChanged", (accounts) => {
-      if (accounts.length === 0) {
-        console.log("User disconnected MetaMask");
+    if (typeof window !== "undefined" && window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length === 0) {
+          console.log("User disconnected MetaMask");
 
-        // Reset account and provider if no accounts are available
-        setAccount(null);
-        providerRef.current = null;
-        signerRef.current = null;
-      } else {
-        setAccount(accounts[0]);
-      }
-    });
+          setAccount(null);
+          providerRef.current = null;
+          signerRef.current = null;
+        } else {
+          setAccount(accounts[0]);
+        }
+      });
+  } else {
+    toast.error('Vui lòng cài đặt ví MetaMask')
+  }
 
     checkMetaMaskConnection();
   }, []);
