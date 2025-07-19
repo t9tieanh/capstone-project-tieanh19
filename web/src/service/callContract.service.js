@@ -59,12 +59,27 @@ const getOwnerOfToken = async (provider, tokenId) => {
 }
 
 
+const addUserToWhitelist = async (signer, userAddress) => {
+  const contract = getWriteContract(signer)
+  const tx = await contract.addToWhitelist(userAddress);
+  return await tx.wait(); // đợi tx được mine
+}
+
+
+const getOwnerOfContract = async(provider) => {
+  const contract = getReadContract(provider);
+  return await await contract.owner();
+}
+
+
 const callContractService = {
   getBalanceOf,
   getTokenURI,
   mintNFT,
   getTokenCount,
-  getOwnerOfToken
+  getOwnerOfToken,
+  addUserToWhitelist,
+  getOwnerOfContract
 }
 
 export default callContractService;

@@ -11,14 +11,22 @@ import ConfirmBuyToken from '../ConfirmBuyToken';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { NFT_ERRORS } from '~/config/contract';
+import { contractAddress } from '~/config/contract';
+import ConfirmAddToWhiteList from '../ConfirmAddToWhiteList';
+import { IoMdPersonAdd } from "react-icons/io";
 
 const Banner = () => {
 
-  const { signerRef } = useContext(AuthenticationContext);
-  const [showCanvas, setShowCanvas] = useState(false);
+  const { signerRef, owner, account } = useContext(AuthenticationContext);
+  const [showCanvasBuyToken, setShowCanvasBuyToken] = useState(false);
 
+  // state add to whitelist
+  const [showCanvasAddWhiteList, setShowCanvasAddWhiteList] = useState(false)
+  
+
+  // - xử lý buy thêm token 
   const handleBuyMore = () => {
-    setShowCanvas(true);
+    setShowCanvasBuyToken(true);
   };
   
   const buyToken = useCallback(async (tokenNumber) => {
@@ -60,6 +68,11 @@ const Banner = () => {
     }
   }, []);
 
+  // xử lý add to whitelist 
+  const handleAddToWhiteList = () => {
+    setShowCanvasAddWhiteList(true);
+  };
+
 
   return (
     <>
@@ -71,19 +84,41 @@ const Banner = () => {
         onClickFunc={handleBuyMore}
       >Mua</PrimaryButton>
 
-      <a href='https://sepolia.etherscan.io/address/0x4Cc9015d8e11CFb8c60D0EbF89fF3A88b9B1F93E' className='ml-3'>
-      <PrimaryButton className={'btn-buy bg-primary ml-3'} 
+      <a href={`https://sepolia.etherscan.io/address/${contractAddress}`} className='mx-3'>
+      <PrimaryButton className={'btn-buy bg-primary'} 
         icon={<FaEthereum />}
         text={'Chi tiết Smart Contract'}
       />
       </a>
+
+      {/* chỉ owner mới dùng được add to whitelist */}
+      {
+        owner && account && owner === account &&
+        <>
+        <PrimaryButton
+          text={<><IoMdPersonAdd />Thêm tài khoản vào White List</>}
+          className={'btn-buy bg-light text-dark ml-3'}
+          onClickFunc={handleAddToWhiteList}
+        />
+        <OffCanvas show={showCanvasAddWhiteList} setShow={setShowCanvasAddWhiteList} 
+          header={'Xác nhận Thêm vào White List'} 
+          children={
+            <ConfirmAddToWhiteList 
+              closeModal={() => {setShowCanvasAddWhiteList(false)}}
+            />
+          }
+          className={'confirm-buy-token'}
+          style={{backgroundColor: '#313233ff', color: 'white'}}
+        />
+        </>
+      }
     </div>
 
     {/* show nút xác nhận mua token */}
-    <OffCanvas show={showCanvas} setShow={setShowCanvas} 
+    <OffCanvas show={showCanvasBuyToken} setShow={setShowCanvasBuyToken} 
       header={'Xác nhận mua token'} 
       children={<ConfirmBuyToken onConfirmBuyToken={buyToken}
-        closeModal={() => setShowCanvas(false)}
+        closeModal={() => setShowCanvasBuyToken(false)}
       />}
       className={'confirm-buy-token'}
       style={{backgroundColor: '#313233ff', color: 'white'}}

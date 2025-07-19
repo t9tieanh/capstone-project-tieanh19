@@ -1,11 +1,14 @@
-export const contractAddress = '0x4Cc9015d8e11CFb8c60D0EbF89fF3A88b9B1F93E'
+export const contractAddress = '0x7226460fcdf12c6f5dbfd2596E6a2e6EF8f4eEe6'
 
 export const ERC721_ABI = [
   'function balanceOf(address owner) view returns (uint256)',
   'function ownerOf(uint256 tokenId) view returns (address)',
   'function tokenURI(uint256 tokenId) view returns (string)',
   'function mint(uint256 amount) external payable',
-  'function nextTokenId() view returns (uint256)'
+  'function nextTokenId() view returns (uint256)',
+  'function addToWhitelist(address user) external',
+  'event AddedToWhitelist(address user)',
+  'function owner() view returns (address)'
 ]
 
 // số lượng NFT tối đa có thể mint

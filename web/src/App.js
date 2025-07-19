@@ -8,6 +8,7 @@ import { BrowserProvider } from 'ethers';
 import { useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
 import { toast } from 'react-toastify';
+import callContractService from './service/callContract.service';
 
 const App = () => {
 
@@ -15,8 +16,14 @@ const App = () => {
   const providerRef = useRef();
   const signerRef = useRef();
   const [balance, setBalance] = useState(0);
+  const [owner, setOwner] = useState(null)
+
 
   useEffect(() => {
+
+    async function getOwerOfContract () {
+      setOwner(await callContractService.getOwnerOfContract(providerRef.current))
+    }
 
     // lấy số dư ví
     async function fetchBalance (address) {
@@ -40,6 +47,9 @@ const App = () => {
       providerRef.current = new BrowserProvider(window.ethereum);
       signerRef.current = await providerRef.current.getSigner();
       const accounts = await providerRef.current.listAccounts();
+
+      // lấy owner 
+      getOwerOfContract()
 
       if (accounts.length > 0) {
         setAccount(accounts[0].address);
@@ -70,7 +80,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <AuthenticationContext.Provider value={{account, setAccount, providerRef, signerRef, balance}}>
+      <AuthenticationContext.Provider value={{account, setAccount, providerRef, signerRef, balance, owner}}>
         <Outlet />
       </AuthenticationContext.Provider>
     </div>
