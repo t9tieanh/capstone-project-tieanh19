@@ -78,7 +78,7 @@ const Banner = () => {
     <>
     <div className='banner'>
       <h1>Mua thêm token</h1>
-      <p><IoIosWarning/>Giới hạn mỗi account được phép mua 10 token!.</p>
+      <p><IoIosWarning/>Giới hạn mỗi account được phép mua 3 token!.</p>
       <PrimaryButton className={'btn-buy bg-danger'} 
         icon={<FaEthereum />}
         onClickFunc={handleBuyMore}
