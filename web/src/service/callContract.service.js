@@ -66,6 +66,13 @@ const addUserToWhitelist = async (signer, userAddress) => {
 }
 
 
+const withdrawFunds  = async (signer) => {
+  const contract = getWriteContract(signer)
+  const tx = await contract.withdraw();
+  return await tx.wait(); // đợi tx withdraw
+}
+
+
 const getOwnerOfContract = async(provider) => {
   const contract = getReadContract(provider);
   return await await contract.owner();
@@ -79,7 +86,8 @@ const callContractService = {
   getTokenCount,
   getOwnerOfToken,
   addUserToWhitelist,
-  getOwnerOfContract
+  getOwnerOfContract,
+  withdrawFunds
 }
 
 export default callContractService;

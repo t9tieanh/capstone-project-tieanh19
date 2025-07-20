@@ -49,7 +49,7 @@ const App = () => {
       const accounts = await providerRef.current.listAccounts();
 
       // lấy owner 
-      getOwerOfContract()
+      await getOwerOfContract()
 
       if (accounts.length > 0) {
         setAccount(accounts[0].address);

@@ -8,7 +8,8 @@ export const ERC721_ABI = [
   'function nextTokenId() view returns (uint256)',
   'function addToWhitelist(address user) external',
   'event AddedToWhitelist(address user)',
-  'function owner() view returns (address)'
+  'function owner() view returns (address)',
+  'function withdraw() external'
 ]
 
 // số lượng NFT tối đa có thể mint

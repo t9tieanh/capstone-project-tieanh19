@@ -50,6 +50,10 @@ const ConfirmAddToWhiteList = ({closeModal}) => {
                         break;
                     case 'insufficient funds for gas * price + value: have 0 want 200000000000000':
                         toast.error("Bạn không đủ ETH để thanh toán phí gas.");
+                        break;
+                    case 'rejected':
+                        toast.error("Bạn đã từ chối giao dịch.");
+                        break;
                     default:
                         toast.error(`Lỗi không xác định: ${error.reason || error.message}`);
                         break;

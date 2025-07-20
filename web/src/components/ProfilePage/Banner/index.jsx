@@ -14,6 +14,9 @@ import { NFT_ERRORS } from '~/config/contract';
 import { contractAddress } from '~/config/contract';
 import ConfirmAddToWhiteList from '../ConfirmAddToWhiteList';
 import { IoMdPersonAdd } from "react-icons/io";
+import { PiHandWithdrawFill } from "react-icons/pi";
+import { AiFillLike } from "react-icons/ai";
+import { AiFillDislike } from "react-icons/ai";
 
 const Banner = () => {
 
@@ -23,15 +26,20 @@ const Banner = () => {
   // state add to whitelist
   const [showCanvasAddWhiteList, setShowCanvasAddWhiteList] = useState(false)
   
-
   // - xử lý buy thêm token 
   const handleBuyMore = () => {
     setShowCanvasBuyToken(true);
   };
-  
-  const buyToken = useCallback(async (tokenNumber) => {
+
+  // withdraw 
+  const withDraw = async () => {
+    if (!(owner && account && owner === account)) {
+      toast.error('Không có quyền truy cập !')
+      return
+    }
+
     try {
-        const tx = await callContractService.mintNFT(signerRef.current, tokenNumber);
+        const tx = await callContractService.withdrawFunds(signerRef.current);
         console.log('Transaction successful:', tx);
     } catch (error) {
         if (error.reason) {
@@ -66,6 +74,81 @@ const Banner = () => {
           }
         }
     }
+  }
+
+
+  // -- xử lý withdraw 
+  const handleWithDraw = () => {
+    toast(
+      ({ closeToast }) => (
+        <div>
+          <p>Bạn có muốn rút tiền không?</p>
+          <PrimaryButton
+            text={'Đồng ý'}
+            icon={<AiFillLike />}
+            className={'mx-2'}
+            onClickFunc={async() => {
+              await withDraw()
+            }}
+            
+          />
+          <PrimaryButton
+            text={'Hủy'}
+            className={'bg-light text-dark'}
+            onClickFunc={closeToast}
+            icon={<AiFillDislike />}
+          />
+        </div>
+      ),
+      {
+        autoClose: false,
+        closeOnClick: true,
+        closeButton: false,
+      }
+    );
+  }
+  
+  const buyToken = useCallback(async (tokenNumber) => {
+    try {
+        const tx = await callContractService.mintNFT(signerRef.current, tokenNumber);
+        console.log('Transaction successful:', tx);
+    } catch (error) {
+        if (error.reason) {
+          switch (error.reason) {
+            case NFT_ERRORS.NOT_WHITELISTED:
+              toast.error("Bạn chưa được vào White List!");
+              break;
+            case NFT_ERRORS.AMOUNT_MUST_BE_GREATER_THAN_ZERO:
+              toast.error("Số lượng token muốn mua phải lớn hơn 0.");
+              break;
+            case NFT_ERRORS.MAX_SUPPLY_EXCEEDED:
+              toast.error("Đã vượt quá tổng cung cho phép.");
+              break;
+            case NFT_ERRORS.MAX_PER_WALLET_EXCEEDED:
+              toast.error("Đã vượt số lượng tối đa mỗi ví.");
+              break;
+            case NFT_ERRORS.NOT_ENOUGH_ETH:
+              toast.error("Bạn không đủ ETH để thực hiện giao dịch.");
+              break;
+            case 'insufficient funds for gas * price + value: have 0 want 200000000000000':
+              toast.error("Bạn không đủ ETH để thanh toán phí gas.");
+              break;
+            case 'rejected':
+              toast.error("Bạn đã từ chối giao dịch.");
+              break;
+            default:
+              toast.error(`Lỗi không xác định: ${error.reason || error.message}`);
+              break;
+          }
+        } 
+        else if (error.code) {
+          if (error.code === "INSUFFICIENT_FUNDS")  toast.error('Bạn không đủ ETH để thực hiện giao dịch.');
+          else if (error.code === 'ACTION_REJECTED') toast.error("Bạn đã từ chối giao dịch.");
+          else {
+            toast.error(`Lỗi không xác định: ${error.code}`);
+          }
+        }
+    }
   }, []);
 
   // xử lý add to whitelist 
@@ -73,45 +156,63 @@ const Banner = () => {
     setShowCanvasAddWhiteList(true);
   };
 
+  // xử lý withdraw
+
 
   return (
     <>
     <div className='banner'>
       <h1>Mua thêm token</h1>
       <p><IoIosWarning/>Giới hạn mỗi account được phép mua 3 token!.</p>
-      <PrimaryButton className={'btn-buy bg-danger'} 
-        icon={<FaEthereum />}
-        onClickFunc={handleBuyMore}
-      >Mua</PrimaryButton>
 
-      <a href={`https://sepolia.etherscan.io/address/${contractAddress}`} className='mx-3'>
-      <PrimaryButton className={'btn-buy bg-primary'} 
-        icon={<FaEthereum />}
-        text={'Chi tiết Smart Contract'}
-      />
-      </a>
+      <div className='d-flex d-flex justify-content-between'>
+        {/* button chức năng */}
+        <div>
+          <PrimaryButton className={'btn-buy bg-danger'} 
+            icon={<FaEthereum />}
+            onClickFunc={handleBuyMore}
+          >Mua</PrimaryButton>
 
-      {/* chỉ owner mới dùng được add to whitelist */}
-      {
-        owner && account && owner === account &&
-        <>
-        <PrimaryButton
-          text={<><IoMdPersonAdd />Thêm tài khoản vào White List</>}
-          className={'btn-buy bg-light text-dark ml-3'}
-          onClickFunc={handleAddToWhiteList}
-        />
-        <OffCanvas show={showCanvasAddWhiteList} setShow={setShowCanvasAddWhiteList} 
-          header={'Xác nhận Thêm vào White List'} 
-          children={
-            <ConfirmAddToWhiteList 
-              closeModal={() => {setShowCanvasAddWhiteList(false)}}
+          <a href={`https://sepolia.etherscan.io/address/${contractAddress}`} className='mx-3'>
+            <PrimaryButton className={'btn-buy bg-primary'} 
+              icon={<FaEthereum />}
+              text={'Chi tiết Smart Contract'}
             />
+          </a>
+        </div>
+        <div>
+          {
+            owner && account && owner === account &&
+            <>
+
+              {/* add to white list */}
+              <PrimaryButton
+                text={<><IoMdPersonAdd />Thêm tài khoản vào White List</>}
+                className={'btn-buy bg-light text-dark mx-3'}
+                onClickFunc={handleAddToWhiteList}
+              />
+              <OffCanvas show={showCanvasAddWhiteList} setShow={setShowCanvasAddWhiteList} 
+                header={'Xác nhận Thêm vào White List'} 
+                children={
+                  <ConfirmAddToWhiteList 
+                    closeModal={() => {setShowCanvasAddWhiteList(false)}}
+                  />
+                }
+                className={'confirm-buy-token'}
+                style={{backgroundColor: '#313233ff', color: 'white'}}
+              />
+
+              {/* withdraw */}
+              <PrimaryButton
+                text={<><PiHandWithdrawFill />Rút tiền</>}
+                className={'btn-buy bg-info text-light ml-3'}
+                onClickFunc={handleWithDraw}
+              />
+            </>
           }
-          className={'confirm-buy-token'}
-          style={{backgroundColor: '#313233ff', color: 'white'}}
-        />
-        </>
-      }
+        </div>
+        
+      </div>
     </div>
 
     {/* show nút xác nhận mua token */}
