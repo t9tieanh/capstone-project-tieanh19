@@ -10,6 +10,9 @@ import "hardhat-deploy-ethers";
 import "@nomicfoundation/hardhat-ethers";
 import "@typechain/hardhat";
 
+import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-verify";
+
 dotenv.config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -81,7 +84,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      "mainnet": "",
+      mainnet: "",
+      sepolia: process.env.ETHERSCAN_API
     }
   },
   sourcify: {

@@ -10,7 +10,8 @@
     "size": "hardhat size-contracts",
     "clean": "hardhat clean",
     "run:sepolia": "hardhat run --network sepolia",
-    "run:ethereum": "hardhat run --network ethereum"
+    "run:ethereum": "hardhat run --network ethereum",
+    "verify": "hardhat run NFTWhitelis.verify.ts --network sepolia"
   },
   "license": "ISC",
   "devDependencies": {
@@ -18,7 +19,8 @@
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "hardhat": "^2.25.0",
     "hardhat-deploy": "^1.0.1",
-    "hardhat-deploy-ethers": "^0.4.2"
+    "hardhat-deploy-ethers": "^0.4.2",
+    "solidity-coverage": "^0.8.1"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
