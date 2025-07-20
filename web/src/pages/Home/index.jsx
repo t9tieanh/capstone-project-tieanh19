@@ -8,10 +8,10 @@ import { MdOutlineDeveloperBoard } from "react-icons/md";
 import { FaUserSecret } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import AuthenticationContext from "~/context/authentication.context";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import ProfilePage from "../Profile";
 import { BrowserProvider } from "ethers";
-import { useRef } from "react";
+import { contractAddress } from "~/config/contract";
 
 const HomePage = () => {
 
@@ -109,13 +109,15 @@ const HomePage = () => {
                         </h5>
                     </div>
 
-                    <Row>
+                    <Row className="w-50">
                         <Col>
+                        <a href={`https://sepolia.etherscan.io/address/${contractAddress}`}>
                             <PrimaryButton
-                                text={'Kết nối với ví MetaMask'}
+                                text={'Chi tiết về contract'}
                                 icon={<FaEthereum />}
                                 className={'btn-connect-wallet'}
                             />
+                        </a>
                         </Col>
                         <Col>
                             <PrimaryButton

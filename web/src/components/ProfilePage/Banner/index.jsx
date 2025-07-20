@@ -156,8 +156,6 @@ const Banner = () => {
     setShowCanvasAddWhiteList(true);
   };
 
-  // xử lý withdraw
-
 
   return (
     <>

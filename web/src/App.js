@@ -39,23 +39,27 @@ const App = () => {
 
     // check connection tới ví
     async function checkMetaMaskConnection() {
-      if (typeof window.ethereum === 'undefined') {
-          console.log("MetaMask chưa được cài đặt!");
-          return;
-      }
+      try {
+        if (typeof window.ethereum === 'undefined') {
+            console.log("MetaMask chưa được cài đặt!");
+            return;
+        }
 
-      providerRef.current = new BrowserProvider(window.ethereum);
-      signerRef.current = await providerRef.current.getSigner();
-      const accounts = await providerRef.current.listAccounts();
+        providerRef.current = new BrowserProvider(window.ethereum);
+        signerRef.current = await providerRef.current.getSigner();
+        const accounts = await providerRef.current.listAccounts();
 
-      // lấy owner 
-      await getOwerOfContract()
+        // lấy owner 
+        await getOwerOfContract()
 
-      if (accounts.length > 0) {
-        setAccount(accounts[0].address);
+        if (accounts.length > 0) {
+          setAccount(accounts[0].address);
 
-        // lấy số dư
-        await fetchBalance(accounts[0].address) 
+          // lấy số dư
+          await fetchBalance(accounts[0].address) 
+        }
+      } catch(error) {
+        toast.error('Đã xảy lỗi khi kết nỗi Metamask');
       }
     }
 
