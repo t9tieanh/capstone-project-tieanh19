@@ -10,6 +10,26 @@
                 "internalType": "string",
                 "name": "symbol",
                 "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_cost",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxSupply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxPerWallet",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "initialBaseURI",
+                "type": "string"
             }
         ],
         "stateMutability": "nonpayable",
@@ -207,6 +227,58 @@
         "anonymous": false,
         "inputs": [
             {
+                "indexed": false,
+                "internalType": "string",
+                "name": "newBaseURI",
+                "type": "string"
+            }
+        ],
+        "name": "BaseURIUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newCost",
+                "type": "uint256"
+            }
+        ],
+        "name": "CostUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newMaxPerWallet",
+                "type": "uint256"
+            }
+        ],
+        "name": "MaxPerWalletUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newMaxSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "MaxSupplyUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
                 "indexed": true,
                 "internalType": "address",
                 "name": "user",
@@ -239,6 +311,19 @@
             }
         ],
         "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "RemovedFromWhitelist",
         "type": "event"
     },
     {
@@ -471,19 +556,6 @@
     },
     {
         "inputs": [],
-        "name": "nextTokenId",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
         "name": "owner",
         "outputs": [
             {
@@ -512,6 +584,19 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "removeFromWhitelist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -593,6 +678,58 @@
     {
         "inputs": [
             {
+                "internalType": "string",
+                "name": "_newBaseURI",
+                "type": "string"
+            }
+        ],
+        "name": "setBaseURI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_cost",
+                "type": "uint256"
+            }
+        ],
+        "name": "setCost",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_maxPerWallet",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxPerWallet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_maxSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxSupply",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "bytes4",
                 "name": "interfaceId",
                 "type": "bytes4"
@@ -636,6 +773,19 @@
                 "internalType": "string",
                 "name": "",
                 "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",

@@ -3,59 +3,48 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract NFTWhitelist is ERC721, Ownable {
-    uint256 public cost = 0.0001 ether;
-    uint256 public maxSupply = 20;
-    uint256 public maxPerWallet = 3;
-    uint256 public nextTokenId;
-    string public baseURI = "https://687144367ca4d06b34b9e592.mockapi.io/metadata/";
+    uint256 public cost;
+    uint256 public maxSupply;
+    uint256 public maxPerWallet;
+    uint256 public totalSupply;
+    string public baseURI;
 
     mapping(address => bool) public whitelisted;
     mapping(address => uint256) public mintedPerWallet;
 
-    // Events for frontend
     event Minted(address indexed user, uint256 amount);
     event AddedToWhitelist(address indexed user);
+    event RemovedFromWhitelist(address indexed user);
     event Withdrawn(uint256 amount);
+    event CostUpdated(uint256 newCost);
+    event MaxSupplyUpdated(uint256 newMaxSupply);
+    event MaxPerWalletUpdated(uint256 newMaxPerWallet);
+    event BaseURIUpdated(string newBaseURI);
 
-    constructor(string memory name, string memory symbol)
-        ERC721(name, symbol)
-        Ownable(msg.sender)
-    {}
-
-    // ----------------------
-    // MODIFIERS (no emit)
-    // ----------------------
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint256 _cost,
+        uint256 _maxSupply,
+        uint256 _maxPerWallet,
+        string memory initialBaseURI
+    ) ERC721(name, symbol) Ownable(msg.sender) {
+        cost = _cost;
+        maxSupply = _maxSupply;
+        maxPerWallet = _maxPerWallet;
+        baseURI = initialBaseURI;
+        totalSupply = 0;
+    }
 
     modifier onlyWhitelisted() {
         require(whitelisted[msg.sender], "Not whitelisted");
         _;
     }
 
-    modifier checkAmount(uint256 amount) {
-        require(amount > 0, "Amount must > 0");
-        _;
-    }
-
-    modifier checkMaxSupply(uint256 amount) {
-        require(nextTokenId + amount <= maxSupply, "Max supply exceeded");
-        _;
-    }
-
-    modifier checkPerWallet(uint256 amount) {
-        require(mintedPerWallet[msg.sender] + amount <= maxPerWallet, "Max per wallet exceeded");
-        _;
-    }
-
-    modifier checkPayment(uint256 amount) {
-        require(msg.value >= cost * amount, "Not enough ETH");
-        _;
-    }
-
     // ----------------------
-    // FUNCTIONS
+    // ADMIN FUNCTIONS
     // ----------------------
 
     function addToWhitelist(address user) external onlyOwner {
@@ -63,32 +52,58 @@ contract NFTWhitelist is ERC721, Ownable {
         emit AddedToWhitelist(user);
     }
 
-    function mint(uint256 amount)
-        external
-        payable
-        onlyWhitelisted
-        checkAmount(amount)
-        checkMaxSupply(amount)
-        checkPerWallet(amount)
-        checkPayment(amount)
-    {
-        mintedPerWallet[msg.sender] += amount;
-
-        for (uint256 i; i < amount; ++i) {
-            _safeMint(msg.sender, nextTokenId + 1);
-            nextTokenId++;
-        }
-
-        emit Minted(msg.sender, amount);
+    function removeFromWhitelist(address user) external onlyOwner {
+        whitelisted[user] = false;
+        emit RemovedFromWhitelist(user);
     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        return string(abi.encodePacked(baseURI, Strings.toString(tokenId)));
+    function setCost(uint256 _cost) external onlyOwner {
+        cost = _cost;
+        emit CostUpdated(_cost);
+    }
+
+    function setMaxSupply(uint256 _maxSupply) external onlyOwner {
+        require(_maxSupply >= totalSupply, "Cannot set lower than current supply");
+        maxSupply = _maxSupply;
+        emit MaxSupplyUpdated(_maxSupply);
+    }
+
+    function setMaxPerWallet(uint256 _maxPerWallet) external onlyOwner {
+        maxPerWallet = _maxPerWallet;
+        emit MaxPerWalletUpdated(_maxPerWallet);
+    }
+
+    function setBaseURI(string memory _newBaseURI) external onlyOwner {
+        baseURI = _newBaseURI;
+        emit BaseURIUpdated(_newBaseURI);
     }
 
     function withdraw() external onlyOwner {
         uint256 balance = address(this).balance;
         payable(owner()).transfer(balance);
         emit Withdrawn(balance);
+    }
+
+    // ----------------------
+    // PUBLIC FUNCTIONS
+    // ----------------------
+
+    function mint(uint256 amount) external payable onlyWhitelisted {
+        require(amount > 0, "Amount must be greater than 0");
+        require(totalSupply + amount <= maxSupply, "Exceeds max supply");
+        require(mintedPerWallet[msg.sender] + amount <= maxPerWallet, "Exceeds max per wallet");
+        require(msg.value >= cost * amount, "Insufficient ETH");
+
+        for (uint256 i = 0; i < amount; i++) {
+            totalSupply++;
+            _safeMint(msg.sender, totalSupply);
+        }
+
+        mintedPerWallet[msg.sender] += amount;
+        emit Minted(msg.sender, amount);
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
     }
 }

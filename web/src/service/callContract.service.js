@@ -49,7 +49,7 @@ const mintNFT = async (signer, amount) => {
 
 const getTokenCount = async (provider) => {
   const contract = getReadContract(provider);
-  return await contract.nextTokenId();
+  return await contract.totalSupply();
 }
 
 

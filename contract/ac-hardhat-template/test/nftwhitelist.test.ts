@@ -6,14 +6,24 @@ describe("Basic NFT Mint Test", function () {
   async function deployFixture() {
     const [owner, user1] = await ethers.getSigners();
 
+    // Constructor arguments
     const name = "NFT Game";
     const symbol = "NFTG";
+    const cost = ethers.parseEther("0.05"); // 0.05 ETH per NFT
+    const maxSupply = 1000;
+    const maxPerWallet = 5;
+    const baseURI = "https://687144367ca4d06b34b9e592.mockapi.io/metadata/";
 
     const NFTWhitelist = await ethers.getContractFactory("NFTWhitelist");
-    const nft = await NFTWhitelist.deploy(name, symbol);
+    const nft = await NFTWhitelist.deploy(
+      name,
+      symbol,
+      cost,
+      maxSupply,
+      maxPerWallet,
+      baseURI
+    );
     await nft.waitForDeployment();
-
-    const cost = await nft.cost();
 
     return { nft, cost, owner, user1 };
   }
@@ -29,7 +39,7 @@ describe("Basic NFT Mint Test", function () {
       .to.emit(nft, "Minted")
       .withArgs(user1.address, 1);
 
-    // Check token owner
-    expect(await nft.ownerOf(1)).to.equal(user1.address);
+    // Verify ownership of the token (ID = 0)
+    expect(await nft.ownerOf(0)).to.equal(user1.address);
   });
 });

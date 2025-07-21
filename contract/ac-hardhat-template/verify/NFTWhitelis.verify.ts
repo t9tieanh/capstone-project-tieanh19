@@ -1,11 +1,15 @@
 import { run } from "hardhat";
 
 export default async function main() {
-  const contractAddress = "0x7226460fcdf12c6f5dbfd2596E6a2e6EF8f4eEe6";
+  const contractAddress = "0x59bA0667668C9Ac5F3C8FEE88E522554778688c3"; 
 
   const constructorArgs = [
-    "NFT Game",  // name
-    "NFTG"       // symbol
+    "Whitelist_NFT",                          // name
+    "WLNFT",                                  // symbol
+    "100000000000000",                        // cost = 0.0001 ETH = 10^14 wei
+    20,                                       // maxSupply
+    3,                                        // maxPerWallet
+    "https://687144367ca4d06b34b9e592.mockapi.io/metadata/" // baseURI
   ];
 
   try {

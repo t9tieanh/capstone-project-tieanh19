@@ -4,5 +4,8 @@
     "react-router-dom": "^6.21.2",
     "react-toastify": "^11.0.5",
     "sass": "^1.89.2"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-verify": "^2.1.0"
   }
 }

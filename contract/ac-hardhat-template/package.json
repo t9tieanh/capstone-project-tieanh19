@@ -5,13 +5,14 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
+    "deploy": "npx hardhat deploy --network sepolia --tags deploy",
     "hardhat": "hardhat",
     "node": "hardhat node",
     "size": "hardhat size-contracts",
     "clean": "hardhat clean",
     "run:sepolia": "hardhat run --network sepolia",
     "run:ethereum": "hardhat run --network ethereum",
-    "verify": "hardhat run NFTWhitelis.verify.ts --network sepolia"
+    "verify": "hardhat run verify/NFTWhitelis.verify.ts --network sepolia"
   },
   "license": "ISC",
   "devDependencies": {
