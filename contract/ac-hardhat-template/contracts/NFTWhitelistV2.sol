@@ -3,22 +3,21 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract NFTWhitelist is ERC721, Ownable, ReentrancyGuard {
+contract NFTMerkleWhitelist is ERC721, Ownable {
     uint256 public cost;
     uint256 public maxSupply;
     uint256 public maxPerWallet;
     uint256 public totalSupply;
     string public baseURI;
 
-    mapping(address => bool) private whitelisted;
-    mapping(address => uint256) private mintedPerWallet;
+    bytes32 public merkleRoot;
+    mapping(address => uint256) public mintedPerWallet;
 
     event Minted(address indexed user, uint256 amount);
-    event AddedToWhitelist(address indexed user);
-    event RemovedFromWhitelist(address indexed user);
     event Withdrawn(uint256 amount);
+    event MerkleRootUpdated(bytes32 newRoot);
     event CostUpdated(uint256 newCost);
     event MaxSupplyUpdated(uint256 newMaxSupply);
     event MaxPerWalletUpdated(uint256 newMaxPerWallet);
@@ -30,32 +29,23 @@ contract NFTWhitelist is ERC721, Ownable, ReentrancyGuard {
         uint256 _cost,
         uint256 _maxSupply,
         uint256 _maxPerWallet,
-        string memory initialBaseURI
+        string memory initialBaseURI,
+        bytes32 _merkleRoot
     ) ERC721(name, symbol) Ownable(msg.sender) {
         cost = _cost;
         maxSupply = _maxSupply;
         maxPerWallet = _maxPerWallet;
         baseURI = initialBaseURI;
-        totalSupply = 0;
-    }
-
-    modifier onlyWhitelisted() {
-        require(whitelisted[msg.sender], "Not whitelisted");
-        _;
+        merkleRoot = _merkleRoot;
     }
 
     // ----------------------
     // ADMIN FUNCTIONS
     // ----------------------
 
-    function addToWhitelist(address user) external onlyOwner {
-        whitelisted[user] = true;
-        emit AddedToWhitelist(user);
-    }
-
-    function removeFromWhitelist(address user) external onlyOwner {
-        whitelisted[user] = false;
-        emit RemovedFromWhitelist(user);
+    function setMerkleRoot(bytes32 _merkleRoot) external onlyOwner {
+        merkleRoot = _merkleRoot;
+        emit MerkleRootUpdated(_merkleRoot);
     }
 
     function setCost(uint256 _cost) external onlyOwner {
@@ -79,28 +69,29 @@ contract NFTWhitelist is ERC721, Ownable, ReentrancyGuard {
         emit BaseURIUpdated(_newBaseURI);
     }
 
-    function withdraw() external onlyOwner nonReentrant {
+    function withdraw() external onlyOwner {
         uint256 balance = address(this).balance;
         payable(owner()).transfer(balance);
         emit Withdrawn(balance);
     }
 
     // ----------------------
-    // PUBLIC FUNCTIONS
+    // PUBLIC MINT FUNCTION
     // ----------------------
 
-    function mint(uint256 amount) external payable onlyWhitelisted {
+    function mint(uint256 amount, bytes32[] calldata merkleProof) external payable {
         require(amount > 0, "Amount must be greater than 0");
         require(totalSupply + amount <= maxSupply, "Exceeds max supply");
         require(mintedPerWallet[msg.sender] + amount <= maxPerWallet, "Exceeds max per wallet");
         require(msg.value >= cost * amount, "Insufficient ETH");
 
-        for (uint256 i = 0; i < amount; ) {
+        // Verify Merkle Proof
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+        require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "Invalid Merkle Proof");
+
+        for (uint256 i = 0; i < amount; i++) {
+            totalSupply++;
             _safeMint(msg.sender, totalSupply);
-            unchecked {
-                totalSupply++;
-                i++;
-            }
         }
 
         mintedPerWallet[msg.sender] += amount;
@@ -109,17 +100,5 @@ contract NFTWhitelist is ERC721, Ownable, ReentrancyGuard {
 
     function _baseURI() internal view override returns (string memory) {
         return baseURI;
-    }
-
-    // ----------------------
-    // VIEW HELPERS
-    // ----------------------
-
-    function isWhitelisted(address user) external view returns (bool) {
-        return whitelisted[user];
-    }
-
-    function mintedBy(address user) external view returns (uint256) {
-        return mintedPerWallet[user];
     }
 }
