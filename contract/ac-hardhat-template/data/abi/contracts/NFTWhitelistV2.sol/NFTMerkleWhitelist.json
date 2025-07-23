@@ -35,6 +35,11 @@
                 "internalType": "bytes32",
                 "name": "_merkleRoot",
                 "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_whitelistEndTime",
+                "type": "uint256"
             }
         ],
         "stateMutability": "nonpayable",
@@ -341,6 +346,19 @@
             }
         ],
         "name": "Transfer",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newEndTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "WhitelistEndTimeUpdated",
         "type": "event"
     },
     {
@@ -727,6 +745,19 @@
     {
         "inputs": [
             {
+                "internalType": "uint256",
+                "name": "_newEndTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "setWhitelistEndTime",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "bytes4",
                 "name": "interfaceId",
                 "type": "bytes4"
@@ -822,6 +853,19 @@
         "name": "transferOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "whitelistEndTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {

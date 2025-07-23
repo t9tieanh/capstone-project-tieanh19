@@ -18,7 +18,7 @@ async function main() {
   const merkleRoot = merkleTree.getRoot().toString("hex");
   const rootFormatted = "0x" + merkleRoot;
 
-  const contractAddress = "0xf2F4de35844474E6EbED57E257d9AE0f7BffF9D3";
+  const contractAddress = "0x16265D6E371a6dA3a53Ba8fe60e13Cc5a1782442";
 
   const args = [
     "Merkle Whitelist NFT",                                // name
@@ -27,7 +27,8 @@ async function main() {
     20,                                                     // maxSupply
     3,                                                      // maxPerWallet
     "https://687144367ca4d06b34b9e592.mockapi.io/metadata/",// baseURI
-    rootFormatted                                           // merkleRoot
+    rootFormatted,                                           // merkleRoot
+    1753391124
   ];
 
   console.log("Verifying contract with arguments:\n", args);

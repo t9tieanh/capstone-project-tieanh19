@@ -12,7 +12,9 @@ contract NFTMerkleWhitelist is ERC721, Ownable {
     uint256 public totalSupply;
     string public baseURI;
 
+    uint256 public whitelistEndTime; 
     bytes32 public merkleRoot;
+
     mapping(address => uint256) public mintedPerWallet;
 
     event Minted(address indexed user, uint256 amount);
@@ -22,6 +24,7 @@ contract NFTMerkleWhitelist is ERC721, Ownable {
     event MaxSupplyUpdated(uint256 newMaxSupply);
     event MaxPerWalletUpdated(uint256 newMaxPerWallet);
     event BaseURIUpdated(string newBaseURI);
+    event WhitelistEndTimeUpdated(uint256 newEndTime);
 
     constructor(
         string memory name,
@@ -30,13 +33,15 @@ contract NFTMerkleWhitelist is ERC721, Ownable {
         uint256 _maxSupply,
         uint256 _maxPerWallet,
         string memory initialBaseURI,
-        bytes32 _merkleRoot
+        bytes32 _merkleRoot,
+        uint256 _whitelistEndTime
     ) ERC721(name, symbol) Ownable(msg.sender) {
         cost = _cost;
         maxSupply = _maxSupply;
         maxPerWallet = _maxPerWallet;
         baseURI = initialBaseURI;
         merkleRoot = _merkleRoot;
+        whitelistEndTime = _whitelistEndTime;
     }
 
     // ----------------------
@@ -69,6 +74,11 @@ contract NFTMerkleWhitelist is ERC721, Ownable {
         emit BaseURIUpdated(_newBaseURI);
     }
 
+    function setWhitelistEndTime(uint256 _newEndTime) external onlyOwner {
+        whitelistEndTime = _newEndTime;
+        emit WhitelistEndTimeUpdated(_newEndTime);
+    }
+
     function withdraw() external onlyOwner {
         uint256 balance = address(this).balance;
         payable(owner()).transfer(balance);
@@ -76,18 +86,23 @@ contract NFTMerkleWhitelist is ERC721, Ownable {
     }
 
     // ----------------------
-    // PUBLIC MINT FUNCTION
+    // MINT FUNCTION
     // ----------------------
 
     function mint(uint256 amount, bytes32[] calldata merkleProof) external payable {
         require(amount > 0, "Amount must be greater than 0");
         require(totalSupply + amount <= maxSupply, "Exceeds max supply");
         require(mintedPerWallet[msg.sender] + amount <= maxPerWallet, "Exceeds max per wallet");
-        require(msg.value >= cost * amount, "Insufficient ETH");
 
-        // Verify Merkle Proof
-        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
-        require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "Invalid Merkle Proof");
+        if (block.timestamp < whitelistEndTime) {
+            // Whitelist mint phase
+            bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+            require(MerkleProof.verify(merkleProof, merkleRoot, leaf), "Not whitelisted");
+            require(msg.value == 0, "Whitelist mint is free");
+        } else {
+            // Public mint phase
+            require(msg.value >= cost * amount, "Insufficient ETH");
+        }
 
         for (uint256 i = 0; i < amount; i++) {
             totalSupply++;

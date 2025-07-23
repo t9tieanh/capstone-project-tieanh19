@@ -47,7 +47,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       maxSupply,
       maxPerWallet,
       baseURI,
-      "0x" + merkleRoot // Merkle root must be 0x-prefixed
+      "0x" + merkleRoot, // Merkle root must be 0x-prefixed
+      1753391124
     ],
     log: true,
     autoMine: true

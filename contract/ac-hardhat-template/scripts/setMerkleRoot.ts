@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import keccak256 from "keccak256";
 import { MerkleTree } from "merkletreejs";
 
-const CONTRACT_ADDRESS = "0xf2F4de35844474E6EbED57E257d9AE0f7BffF9D3";
+const CONTRACT_ADDRESS = "0x16265D6E371a6dA3a53Ba8fe60e13Cc5a1782442";
 
 async function main() {
   const [signer] = await ethers.getSigners(); // Người gọi mint
