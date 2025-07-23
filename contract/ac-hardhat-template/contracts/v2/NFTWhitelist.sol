@@ -58,12 +58,10 @@ contract NFTMerkleWhitelistV2 is ERC721, Ownable, ReentrancyGuard {
         require(mintedPerWallet[msg.sender] + amount <= config.maxPerWallet(), "Exceeds max per wallet");
         
 
-        // If whitelist is active, check Merkle Proof and cost is zero
+        // If whitelist is active
         if (block.timestamp <= config.whitelistEndTime()) {
-            // FIX 2: Call the function to get its return value
             require(helper.verify(merkleProof, config.merkleRoot(), msg.sender), "Invalid Merkle Proof");
-            // Whitelist mint should be free or have a different price. Let's assume free for now.
-            // require(msg.value == 0, "Whitelist mint is free");
+            require(msg.value == 0, "Whitelist mint is free");
         } else {
              require(msg.value >= config.cost() * amount, "Insufficient ETH for public sale");
         }
