@@ -11,6 +11,9 @@
 # production
 /build
 
+#abi
+/src/config/abi.json
+
 # misc
 .DS_Store
 .env.local

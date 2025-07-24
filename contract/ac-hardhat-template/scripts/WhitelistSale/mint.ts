@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import keccak256 from "keccak256";
 import { MerkleTree } from "merkletreejs";
 
-const CONTRACT_ADDRESS = "0x16265D6E371a6dA3a53Ba8fe60e13Cc5a1782442";
+const CONTRACT_ADDRESS = "0x9e7E48707cf39514DADB48b6fc9716f6ee7cC94b";
 
 async function main() {
   const [signer] = await ethers.getSigners(); // Người gọi mint
@@ -13,7 +13,6 @@ async function main() {
     "0x3d6a96d41f4331B97A814CEF25407278b79e3BE8",
     "0x94337fc24282E73C298D173ecAe43B4ef2B1074d",
     "0x65cFbdF39A00a183c874ddf1e01B6d0B554BA3Ba",
-    "0x9D03A5a01DDe849503fc7C759672048E990E71Ec"
   ];
 
   // Tạo Merkle Tree
@@ -27,15 +26,15 @@ async function main() {
   console.log("Merkle Proof:", hexProof);
 
   // get contract
-  const contract = await ethers.getContractAt("NFTMerkleWhitelist", CONTRACT_ADDRESS);
+  const contract = await ethers.getContractAt("WhitelistSale", CONTRACT_ADDRESS);
 
-  //Thực hiện mint -> hết whitelist
-  const tx = await contract.mint(1, hexProof, {
+  //Thực hiện mint -> hết whitelist -> mở khi hết thời gian whitelist
+  const tx = await contract.whitelistMint(1, hexProof, {
     value: ethers.parseEther("0.0001")
   });
 
-  // mint có white list -> không mất phí
-  //const tx = await contract.mint(1, hexProof);
+  // mint có white list -> không mất phí -> mở khi trong thời gian whitelist
+  //const tx = await contract.whitelistMint(1, hexProof);
 
   console.log("Minting... tx:", tx.hash);
   await tx.wait();

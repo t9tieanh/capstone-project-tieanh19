@@ -3,43 +3,18 @@
         "inputs": [
             {
                 "internalType": "string",
-                "name": "name",
+                "name": "name_",
                 "type": "string"
             },
             {
                 "internalType": "string",
-                "name": "symbol",
+                "name": "symbol_",
                 "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_cost",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_maxSupply",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_maxPerWallet",
-                "type": "uint256"
             },
             {
                 "internalType": "string",
-                "name": "initialBaseURI",
+                "name": "_initialBaseURI",
                 "type": "string"
-            },
-            {
-                "internalType": "bytes32",
-                "name": "_merkleRoot",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_whitelistEndTime",
-                "type": "uint256"
             }
         ],
         "stateMutability": "nonpayable",
@@ -237,67 +212,15 @@
         "anonymous": false,
         "inputs": [
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "newCost",
-                "type": "uint256"
-            }
-        ],
-        "name": "CostUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "newMaxPerWallet",
-                "type": "uint256"
-            }
-        ],
-        "name": "MaxPerWalletUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "newMaxSupply",
-                "type": "uint256"
-            }
-        ],
-        "name": "MaxSupplyUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "bytes32",
-                "name": "newRoot",
-                "type": "bytes32"
-            }
-        ],
-        "name": "MerkleRootUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
                 "indexed": true,
                 "internalType": "address",
-                "name": "user",
+                "name": "to",
                 "type": "address"
             },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
@@ -353,25 +276,12 @@
         "inputs": [
             {
                 "indexed": false,
-                "internalType": "uint256",
-                "name": "newEndTime",
-                "type": "uint256"
+                "internalType": "address",
+                "name": "newContract",
+                "type": "address"
             }
         ],
-        "name": "WhitelistEndTimeUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "Withdrawn",
+        "name": "WhitelistContractUpdated",
         "type": "event"
     },
     {
@@ -413,25 +323,12 @@
     },
     {
         "inputs": [],
-        "name": "baseURI",
+        "name": "baseTokenURI",
         "outputs": [
             {
                 "internalType": "string",
                 "name": "",
                 "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "cost",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -481,60 +378,21 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "maxPerWallet",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "maxSupply",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "merkleRoot",
-        "outputs": [
-            {
-                "internalType": "bytes32",
-                "name": "",
-                "type": "bytes32"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
             {
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
-            },
-            {
-                "internalType": "bytes32[]",
-                "name": "merkleProof",
-                "type": "bytes32[]"
             }
         ],
         "name": "mint",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -681,7 +539,7 @@
         "inputs": [
             {
                 "internalType": "string",
-                "name": "_newBaseURI",
+                "name": "newBaseURI",
                 "type": "string"
             }
         ],
@@ -693,64 +551,12 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "_cost",
-                "type": "uint256"
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
             }
         ],
-        "name": "setCost",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_maxPerWallet",
-                "type": "uint256"
-            }
-        ],
-        "name": "setMaxPerWallet",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_maxSupply",
-                "type": "uint256"
-            }
-        ],
-        "name": "setMaxSupply",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "bytes32",
-                "name": "_merkleRoot",
-                "type": "bytes32"
-            }
-        ],
-        "name": "setMerkleRoot",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_newEndTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "setWhitelistEndTime",
+        "name": "setWhitelistContract",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -857,22 +663,15 @@
     },
     {
         "inputs": [],
-        "name": "whitelistEndTime",
+        "name": "whitelistContract",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "address",
                 "name": "",
-                "type": "uint256"
+                "type": "address"
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]

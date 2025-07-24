@@ -110,7 +110,8 @@ const Banner = () => {
   
   const buyToken = useCallback(async (tokenNumber) => {
     try {
-        const tx = await callContractService.mintNFT(signerRef.current, tokenNumber);
+        console.log('tuean')
+        const tx = await callContractService.mintNFT(signerRef.current, account, tokenNumber);
         console.log('Transaction successful:', tx);
     } catch (error) {
         if (error.reason) {
@@ -121,6 +122,10 @@ const Banner = () => {
             case NFT_ERRORS.AMOUNT_MUST_BE_GREATER_THAN_ZERO:
               toast.error("Số lượng token muốn mua phải lớn hơn 0.");
               break;
+            case NFT_ERRORS.INVALID_MERKLE_PROOF:
+              toast.error(`${NFT_ERRORS.INVALID_MERKLE_PROOF}: Bạn chưa được vào White List!`);
+              break;
+            
             case NFT_ERRORS.MAX_SUPPLY_EXCEEDED:
               toast.error("Đã vượt quá tổng cung cho phép.");
               break;
