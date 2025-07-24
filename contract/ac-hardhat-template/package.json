@@ -5,8 +5,9 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
-    "deploy": "npx hardhat deploy --network sepolia --tags deploy-1",
-    "deploy1": "npx hardhat deploy --network sepolia --tags deploy-2",
+    "deploy1": "npx hardhat deploy --network sepolia --tags deploy-4",
+    "deploy2": "npx hardhat deploy --network sepolia --tags deploy-5",
+    "deploy3": "npx hardhat deploy --network sepolia --tags deploy-6",
     "hardhat": "hardhat",
     "node": "hardhat node",
     "size": "hardhat size-contracts",

@@ -1,16 +1,7 @@
-export const contractAddress = '0x59bA0667668C9Ac5F3C8FEE88E522554778688c3'
+import ERC721_ABI from './abi.json'
+export const contractAddress = '0xf2F4de35844474E6EbED57E257d9AE0f7BffF9D3'
 
-export const ERC721_ABI = [
-  'function balanceOf(address owner) view returns (uint256)',
-  'function ownerOf(uint256 tokenId) view returns (address)',
-  'function tokenURI(uint256 tokenId) view returns (string)',
-  'function mint(uint256 amount) external payable',
-  'function totalSupply() view returns (uint256)',
-  'function addToWhitelist(address user) external',
-  'event AddedToWhitelist(address user)',
-  'function owner() view returns (address)',
-  'function withdraw() external'
-];
+export { ERC721_ABI };
 
 // số lượng NFT tối đa có thể mint
 export const maxSupply = 20;
@@ -26,5 +17,6 @@ export const NFT_ERRORS = Object.freeze({
   AMOUNT_MUST_BE_GREATER_THAN_ZERO: "Amount must be greater than 0",
   MAX_SUPPLY_EXCEEDED: "Exceeds max supply",
   MAX_PER_WALLET_EXCEEDED: "Exceeds max per wallet",
-  NOT_ENOUGH_ETH: "Insufficient ETH"
+  NOT_ENOUGH_ETH: "Insufficient ETH",
+  INVALID_MERKLE_PROOF: "Invalid Merkle Proof"
 });

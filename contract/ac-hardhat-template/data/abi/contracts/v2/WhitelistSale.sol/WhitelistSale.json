@@ -3,12 +3,27 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "initialOwner",
+                "name": "_nftAddress",
                 "type": "address"
             },
             {
+                "internalType": "address",
+                "name": "_helper",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_merkleRoot",
+                "type": "bytes32"
+            },
+            {
                 "internalType": "uint256",
-                "name": "_cost",
+                "name": "_whitelistEndTime",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_price",
                 "type": "uint256"
             },
             {
@@ -19,16 +34,6 @@
             {
                 "internalType": "uint256",
                 "name": "_maxPerWallet",
-                "type": "uint256"
-            },
-            {
-                "internalType": "bytes32",
-                "name": "_merkleRoot",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_whitelistEndTime",
                 "type": "uint256"
             }
         ],
@@ -59,54 +64,27 @@
     },
     {
         "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "newCost",
-                "type": "uint256"
-            }
-        ],
-        "name": "CostUpdated",
+        "inputs": [],
+        "name": "ConfigUpdated",
         "type": "event"
     },
     {
         "anonymous": false,
         "inputs": [
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "newMaxPerWallet",
-                "type": "uint256"
-            }
-        ],
-        "name": "MaxPerWalletUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "newMaxSupply",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
-        "name": "MaxSupplyUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "bytes32",
-                "name": "newRoot",
-                "type": "bytes32"
-            }
-        ],
-        "name": "MerkleRootUpdated",
+        "name": "Minted",
         "type": "event"
     },
     {
@@ -127,32 +105,6 @@
         ],
         "name": "OwnershipTransferred",
         "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "newEndTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "WhitelistEndTimeUpdated",
-        "type": "event"
-    },
-    {
-        "inputs": [],
-        "name": "cost",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
     },
     {
         "inputs": [],
@@ -195,6 +147,19 @@
     },
     {
         "inputs": [],
+        "name": "nft",
+        "outputs": [
+            {
+                "internalType": "contract INFT",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "owner",
         "outputs": [
             {
@@ -208,20 +173,20 @@
     },
     {
         "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
+        "name": "price",
+        "outputs": [
             {
                 "internalType": "uint256",
-                "name": "_cost",
+                "name": "",
                 "type": "uint256"
             }
         ],
-        "name": "setCost",
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -269,6 +234,19 @@
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
                 "name": "_whitelistEndTime",
                 "type": "uint256"
             }
@@ -276,6 +254,19 @@
         "name": "setWhitelistEndTime",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalMinted",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -302,6 +293,31 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "proof",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "whitelistMint",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]

@@ -3,23 +3,13 @@
         "inputs": [
             {
                 "internalType": "string",
-                "name": "name",
+                "name": "name_",
                 "type": "string"
             },
             {
                 "internalType": "string",
-                "name": "symbol",
+                "name": "symbol_",
                 "type": "string"
-            },
-            {
-                "internalType": "address",
-                "name": "configAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "_helper",
-                "type": "address"
             },
             {
                 "internalType": "string",
@@ -156,11 +146,6 @@
         "type": "error"
     },
     {
-        "inputs": [],
-        "name": "ReentrancyGuardReentrantCall",
-        "type": "error"
-    },
-    {
         "anonymous": false,
         "inputs": [
             {
@@ -229,13 +214,13 @@
             {
                 "indexed": true,
                 "internalType": "address",
-                "name": "user",
+                "name": "to",
                 "type": "address"
             },
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
@@ -291,12 +276,12 @@
         "inputs": [
             {
                 "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
+                "internalType": "address",
+                "name": "newContract",
+                "type": "address"
             }
         ],
-        "name": "Withdrawn",
+        "name": "WhitelistContractUpdated",
         "type": "event"
     },
     {
@@ -338,25 +323,12 @@
     },
     {
         "inputs": [],
-        "name": "baseURI",
+        "name": "baseTokenURI",
         "outputs": [
             {
                 "internalType": "string",
                 "name": "",
                 "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "config",
-        "outputs": [
-            {
-                "internalType": "contract MintConfig",
-                "name": "",
-                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -374,19 +346,6 @@
         "outputs": [
             {
                 "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "helper",
-        "outputs": [
-            {
-                "internalType": "contract MerkleHelper",
                 "name": "",
                 "type": "address"
             }
@@ -421,19 +380,19 @@
     {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
-            },
-            {
-                "internalType": "bytes32[]",
-                "name": "merkleProof",
-                "type": "bytes32[]"
             }
         ],
         "name": "mint",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -580,11 +539,24 @@
         "inputs": [
             {
                 "internalType": "string",
-                "name": "_newBaseURI",
+                "name": "newBaseURI",
                 "type": "string"
             }
         ],
         "name": "setBaseURI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            }
+        ],
+        "name": "setWhitelistContract",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -691,9 +663,15 @@
     },
     {
         "inputs": [],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "name": "whitelistContract",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     }
 ]

@@ -1,16 +1,16 @@
 //setMerkleRoot
 import { ethers } from "hardhat";
 
-const CONTRACT_ADDRESS = "0x16265D6E371a6dA3a53Ba8fe60e13Cc5a1782442";
+const CONTRACT_ADDRESS = "0x9e7E48707cf39514DADB48b6fc9716f6ee7cC94b";
 
 async function main() {
   //const [signer] = await ethers.getSigners(); // Người gọi mint
 
   // get contract
-  const contract = await ethers.getContractAt("NFTMerkleWhitelist", CONTRACT_ADDRESS);
+  const contract = await ethers.getContractAt("WhitelistSale", CONTRACT_ADDRESS);
 
   // setMerkleRoot
-  const tx = await contract.setWhitelistEndTime(1753225524);
+  const tx = await contract.setWhitelistEndTime(1753052163);
 
   console.log("setWhitelistEndTime... tx:", tx.hash);
   await tx.wait();

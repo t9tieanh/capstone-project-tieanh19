@@ -2,6 +2,7 @@ import { ERC721_ABI, contractAddress } from "~/config/contract";
 import { ethers } from "ethers";
 import { parseEther } from "ethers";
 import { pricePerToken } from "~/config/contract";
+import merkleTreeService from "./merkleTree.service";
 
 let readContract = null;
 let writeContract = null;
@@ -32,15 +33,18 @@ const getTokenURI = async (provider, tokenId) => {
   return owner;
 }
 
-const mintNFT = async (signer, amount) => {
+const mintNFT = async (signer, userAddress, amount) => {
   const contract = getWriteContract(signer);
+
+  // tạo proof
+  const proof = merkleTreeService.getProof(userAddress);
 
   // giá mỗi token là 0.01 ETH
   const pricePerNFT = parseEther(pricePerToken);
   // eslint-disable-next-line no-undef
   const totalPrice = pricePerNFT * BigInt(amount);
 
-  const tx = await contract.mint(amount, {
+  const tx = await contract.mint(amount, proof,{
       value: totalPrice
   });
 

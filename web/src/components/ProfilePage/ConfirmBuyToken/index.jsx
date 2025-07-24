@@ -17,7 +17,7 @@ const ConfirmBuyToken = ({ onConfirmBuyToken, closeModal }) => {
 
     const handleConfirm = async (e) => {
 
-         e.preventDefault();
+        e.preventDefault();
 
         if (tokenNumber <= 0) {
             toast.error('Số lượng token phải lớn hơn 0!');
